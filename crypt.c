@@ -23,7 +23,7 @@
 #include "crypt.h"
 #include <ecryptfs.h>
 
-int add_passphrase(char* passphrase, int fnek)
+int add_passphrase(char* passphrase, int fnek, FILE *ios)
 {
 	char auth_tok_sig_hex[ECRYPTFS_SIG_SIZE_HEX + 1];
 	char salt[ECRYPTFS_SALT_SIZE];
@@ -55,7 +55,7 @@ int add_passphrase(char* passphrase, int fnek)
 	} else
 		rc = 0;
 	auth_tok_sig_hex[ECRYPTFS_SIG_SIZE_HEX] = '\0';
-	printf("Inserted auth tok with sig [%s] into the user session "
+	fprintf(ios, "\nInserted auth tok with sig [%s] into the user session "
 			"keyring\n", auth_tok_sig_hex);
 
 	if (fnek == 0) {
@@ -75,7 +75,7 @@ int add_passphrase(char* passphrase, int fnek)
 	} else
 		rc = 0;
 	auth_tok_sig_hex[ECRYPTFS_SIG_SIZE_HEX] = '\0';
-	printf("Inserted auth tok with sig [%s] into the user session "
+	fprintf(ios, "\nInserted auth tok with sig [%s] into the user session "
 			"keyring\n", auth_tok_sig_hex);
 
 out:

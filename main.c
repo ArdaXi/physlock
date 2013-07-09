@@ -192,7 +192,8 @@ int main(int argc, char **argv) {
 	}
 
 	if (options->crypt) {
-		add_passphrase(buf, options->fnek);
+		add_passphrase(buf, options->fnek, vt.ios);
+		sleep(1);
 	}
 
 	cleanup();

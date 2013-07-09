@@ -21,6 +21,6 @@
 
 #include <ecryptfs.h>
 
-int add_passphrase(char*, int);
+int add_passphrase(char*, int, FILE*);
 
 #endif /* CRYPT_H */
