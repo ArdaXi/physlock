@@ -31,6 +31,7 @@
 #include "options.h"
 #include "util.h"
 #include "vt.h"
+#include "crypt.h"
 
 enum { BUFLEN = 1024 };
 
@@ -188,6 +189,10 @@ int main(int argc, char **argv) {
 			fprintf(vt.ios, "\nAuthentication failed\n");
 			sleep(AUTH_FAIL_TIMEOUT);
 		}
+	}
+
+	if (options->crypt) {
+		add_passphrase(buf, options->fnek);
 	}
 
 	cleanup();

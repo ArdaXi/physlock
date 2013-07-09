@@ -1,14 +1,14 @@
 all: physlock
 
-VERSION = 0.4.4
+VERSION = 0.4.5
 
 CC      = gcc
 PREFIX  = /usr/local
 CFLAGS  = -Wall -pedantic -DVERSION=\"$(VERSION)\"
 LDFLAGS =
-LIBS    = -lcrypt
+LIBS    = -lcrypt -lecryptfs
 
-SRC = auth.c main.c options.c util.c vt.c
+SRC = auth.c crypt.c main.c options.c util.c vt.c
 OBJ = $(SRC:.c=.o)
 
 physlock:	$(OBJ)

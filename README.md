@@ -40,6 +40,8 @@ The following command-line arguments are supported:
 
     -d       fork and detach, parent returns after everything is set up
              (useful for suspend/hibernate scripts)
+	-e		 insert password into kernel keyring
+	-f		 also insert filename encryption key
     -h       print short usage help and exit
     -l       only lock console switching
     -L       only enable console switching

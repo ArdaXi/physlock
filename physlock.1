@@ -3,7 +3,7 @@
 physlock \- lock all consoles / virtual terminals
 .SH SYNOPSIS
 .B physlock
-.RB [ \-dhLlsv ]
+.RB [ \-defhLlsv ]
 .RB [ \-u
 .IR USER ]
 .SH DESCRIPTION
@@ -24,6 +24,12 @@ given on the command line, then physlock uses the name of the calling user.
 Fork and detach physlock before prompting for authentication. The parent
 process returns right after everything is set up, so this option is useful for
 use in suspend/hibernate scripts.
+.TP
+.B \-e
+Add entered passphrase as an eCryptfs mount passphrase in the kernel keyring.
+.TP
+.B \-f
+Add the filename encryption key associated with the input passphrase to the kernel keyring. If -e is not supplied, this option does nothing.
 .TP
 .B \-h
 Print brief usage information to standard output and exit.

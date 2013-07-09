@@ -1,5 +1,5 @@
-/* physlock: options.h
- * Copyright (c) 2013 Bert Muennich <be.muennich at gmail.com>
+/* physlock: crypt.h
+ * Copyright (c) 2013 Ariën Holthuizen <contact at ardaxi.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,24 +16,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef OPTIONS_H
-#define OPTIONS_H
+#ifndef CRYPT_H 
+#define CRYPT_H
 
-typedef struct options_s {
-	int detach;
-	int disable_sysrq;
-	int only_lock;
-	int only_unlock;
-	int crypt;
-	int fnek;
-	const char *user;
-} options_t;
+#include <ecryptfs.h>
 
-extern const options_t *options;
+int add_passphrase(char*, int);
 
-void print_usage();
-void print_version();
-
-void parse_options(int, char**);
-
-#endif /* OPTIONS_H */
+#endif /* CRYPT_H */
