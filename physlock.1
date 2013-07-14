@@ -4,6 +4,8 @@ physlock \- lock all consoles / virtual terminals
 .SH SYNOPSIS
 .B physlock
 .RB [ \-defhLlsv ]
+.RB [ \-c
+.IR COMMAND ]
 .RB [ \-u
 .IR USER ]
 .SH DESCRIPTION
@@ -29,7 +31,8 @@ use in suspend/hibernate scripts.
 Add entered passphrase as an eCryptfs mount passphrase in the kernel keyring.
 .TP
 .B \-f
-Add the filename encryption key associated with the input passphrase to the kernel keyring. If -e is not supplied, this option does nothing.
+Add the filename encryption key associated with the input passphrase to the
+kernel keyring. If -e is not supplied, this option does nothing.
 .TP
 .B \-h
 Print brief usage information to standard output and exit.
@@ -48,14 +51,19 @@ Disable SysRq mechanism while physlock is running.
 .B \-v
 Print version information to standard output and exit.
 .TP
+.B \-c COMMAND
+Execute the given command before and after locking. Before locking, it is
+called with the lock argument, afterwards with the unlock argument.
+.TP
 .B \-u USER
 Allow the given user to unlock the computer. Using this option prevents physlock
 from using the name of the calling user.
 .SH AUTHORS
 .TP
 Bert Muennich <ber.t at gmx.com>
+Ariën Holthuizen <contact at ardaxi.com>
 .SH HOMEPAGE
 .TP
-http://github.com/muennich/physlock
+http://github.com/ardaxi/physlock
 .SH SEE ALSO
 .BR vlock (1)

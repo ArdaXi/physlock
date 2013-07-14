@@ -94,6 +94,26 @@ void prompt(FILE *stream, const char *fmt, ...) {
 	buf[i] = '\0';
 }
 
+void handle_cmd(int lock) {
+	FILE *fp;
+	char buf[256];
+	int retval;
+
+	snprintf(buf, sizeof buf, "%s %s 2>&1", options->cmd, lock ? "lock" : "unlock");
+	if (( fp = popen(buf, "r")) == NULL)
+	{
+		fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
+		return;
+	}
+	while(fgets(buf, sizeof buf, fp))
+		fputs(buf, vt.ios);
+	if((retval = pclose(fp)))
+	{
+		fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
+		fprintf(stderr, "%s exited with status %d\n", options->cmd, retval);
+	}
+}
+
 int main(int argc, char **argv) {
 	int only_root, auth = 0, chpid;
 	uid_t uid;
@@ -164,6 +184,9 @@ int main(int argc, char **argv) {
 			setsid();
 	}
 
+	if (options->cmd)
+		handle_cmd(1);
+
 	while (!auth) {
 		as = &root;
 		flush_vt(&vt);
@@ -191,10 +214,13 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	if (options->crypt) {
+	if (options->crypt)
 		add_passphrase(buf, options->fnek, vt.ios);
-		sleep(1);
-	}
+
+	if (options->cmd)
+		handle_cmd(0);
+
+	sleep(1);
 
 	cleanup();
 

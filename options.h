@@ -26,6 +26,7 @@ typedef struct options_s {
 	int only_unlock;
 	int crypt;
 	int fnek;
+	const char *cmd;
 	const char *user;
 } options_t;
 
