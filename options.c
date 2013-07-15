@@ -46,7 +46,6 @@ void parse_options(int argc, char **argv) {
 	_options.crypt = 0;
 	_options.fnek = 0;
 	_options.cmd = NULL;
-	_options.cmdlen = 0;
 	_options.user = NULL;
 
 	while ((opt = getopt(argc, argv, "defhLlsc:u:v")) != -1) {
@@ -77,7 +76,6 @@ void parse_options(int argc, char **argv) {
 				break;
 			case 'c':
 				_options.cmd = optarg;
-				_options.cmdlen = strlen(optarg);
 				break;
 			case 'u':
 				_options.user = optarg;

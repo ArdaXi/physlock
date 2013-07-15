@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <signal.h>
-#include <alloca.h>
+#include <sys/wait.h>
 
 #include "auth.h"
 #include "config.h"
@@ -96,24 +96,21 @@ void prompt(FILE *stream, const char *fmt, ...) {
 }
 
 void handle_cmd(int lock) {
-	FILE *fp;
-	int retval;
-	int len;
-	char *buf = alloca(len = options->cmdlen + 13); /* " unlock 2>&1\0" is 13 characters. */
+	pid_t childpid;
 
-	snprintf(buf, len, "%s %s 2>&1", options->cmd, lock ? "lock" : "unlock");
-	if (( fp = popen(buf, "r")) == NULL)
+	if((childpid = fork()) == -1)
 	{
 		fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
 		return;
 	}
-	while(fgets(buf, sizeof buf, fp))
-		fputs(buf, vt.ios);
-	if((retval = pclose(fp)))
+	if(childpid > 0)
 	{
-		fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
-		fprintf(stderr, "%s exited with status %d\n", options->cmd, retval);
+		wait(NULL);
+		return;
 	}
+	dup2(vt.fd, 1);
+	dup2(vt.fd, 2);
+	execlp(options->cmd, options->cmd, lock ? "lock" : "unlock", NULL);
 }
 
 int main(int argc, char **argv) {
