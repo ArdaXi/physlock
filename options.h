@@ -27,6 +27,7 @@ typedef struct options_s {
 	int crypt;
 	int fnek;
 	const char *cmd;
+	size_t cmdlen;
 	const char *user;
 } options_t;
 

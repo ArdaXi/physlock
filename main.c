@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <signal.h>
+#include <alloca.h>
 
 #include "auth.h"
 #include "config.h"
@@ -96,10 +97,11 @@ void prompt(FILE *stream, const char *fmt, ...) {
 
 void handle_cmd(int lock) {
 	FILE *fp;
-	char buf[256];
 	int retval;
+	int len;
+	char *buf = alloca(len = options->cmdlen + 13); /* " unlock 2>&1\0" is 13 characters. */
 
-	snprintf(buf, sizeof buf, "%s %s 2>&1", options->cmd, lock ? "lock" : "unlock");
+	snprintf(buf, len, "%s %s 2>&1", options->cmd, lock ? "lock" : "unlock");
 	if (( fp = popen(buf, "r")) == NULL)
 	{
 		fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
