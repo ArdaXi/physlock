@@ -101,6 +101,7 @@ void handle_cmd(int lock) {
 	if((childpid = fork()) == -1)
 	{
 		fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
+		fprintf(stderr, "Failed to fork, error %d\n", errno);
 		return;
 	}
 	if(childpid > 0)
@@ -113,11 +114,15 @@ void handle_cmd(int lock) {
 			fprintf(vt.ios, "\n--- FAILED TO EXECUTE COMMAND ---\n");
 			if(retval == 128)
 				fprintf(stderr, "Command not found: %s\n", options->cmd);
+			else if(retval == 129)
+				fprintf(stderr, "Failed to demote child. Aborting command.");
 			else
 				fprintf(stderr, "%s returned %d\n", options->cmd, retval);
 		}
 		return;
 	}
+	if(setuid(getuid()) < 0) /* Run forked process as calling user to avoid privilege escalation */
+		exit(129);
 	dup2(vt.fd, 1);
 	dup2(vt.fd, 2);
 	execlp(options->cmd, options->cmd, lock ? "lock" : "unlock", NULL);
